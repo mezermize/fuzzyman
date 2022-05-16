@@ -1,4 +1,5 @@
 package simulator;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -74,7 +75,6 @@ public class Simulator {
 		mushroom = new Point(x, y);
 	}
 
-
 	/**
 	 * Sets the new angle for the wheels of the robot.
 	 * 
@@ -86,10 +86,9 @@ public class Simulator {
 
 	/**
 	 * Setter for the action for the robot to perform in the next time step.
-	 * Possible actions are: 
-	 *  - DESTROY: used to instruct the robot to destroy the mushroom, 
-	 *  - NO_ACTION: the robot does not perform any action, 
-	 *  - PICK_UP: used to instruct the robot to pick up the mushroom.
+	 * Possible actions are: - DESTROY: used to instruct the robot to destroy the
+	 * mushroom, - NO_ACTION: the robot does not perform any action, - PICK_UP: used
+	 * to instruct the robot to pick up the mushroom.
 	 * 
 	 * @param action to be performed.
 	 */
@@ -117,7 +116,6 @@ public class Simulator {
 		return mushrooms.get(index).getAttributes();
 
 	}
-	
 
 	/**
 	 * Sets the new robot speed.
@@ -260,39 +258,45 @@ public class Simulator {
 		private static final int OBST_RADIUS = 50;
 
 		@Override
-		public void paint(Graphics g) { 
+		public void paint(Graphics g) {
 			super.paint(g);
 			g.setFont(new Font("Courier New", 1, 17));
 			g.drawString("Points: " + points, 30, 30);
-			
-			if(action == Action.NO_ACTION) {
-				g.drawString("Looking for Mushroom", 30, 60);
-			}else{
-			if(action == Action.DESTROY) {
-				g.drawString("Destroyed!", 30, 60);
-				
-			}else{
-			if(action == Action.PICK_UP) {
-				g.drawString("Picked Up", 30, 60);
-			}}}
-			
-			
-			g.setColor(Color.black);
-			g.fillOval(mushroom.x - OBST_RADIUS / 2, mushroom.y - OBST_RADIUS / 2, OBST_RADIUS, OBST_RADIUS);
-			g.drawImage(mushrooms.get(index).getImage().getImage(), mushroom.x - OBST_RADIUS / 2,
-					mushroom.y - OBST_RADIUS / 2, OBST_RADIUS, OBST_RADIUS, null);
 
-			g.drawOval(robotPosition.x - ROBOT_RADIUS / 2, robotPosition.y - ROBOT_RADIUS / 2, ROBOT_RADIUS,ROBOT_RADIUS);
+			if (action == Action.NO_ACTION) {
+				g.drawString("Looking for Mushroom", 30, 60);
+			} else {
+				if (action == Action.DESTROY) {
+					g.drawString("Destroyed!", 30, 60);
+
+				} else {
+					if (action == Action.PICK_UP) {
+						g.drawString("Picked Up", 30, 60);
+					}
+				}
+			}
+
+			g.setColor(Color.black);
+
+			if (mushroom != null) {
+				g.fillOval(mushroom.x - OBST_RADIUS / 2, mushroom.y - OBST_RADIUS / 2, OBST_RADIUS, OBST_RADIUS);
+				g.drawImage(mushrooms.get(index).getImage().getImage(), mushroom.x - OBST_RADIUS / 2,
+						mushroom.y - OBST_RADIUS / 2, OBST_RADIUS, OBST_RADIUS, null);
+			}
+
+			g.drawOval(robotPosition.x - ROBOT_RADIUS / 2, robotPosition.y - ROBOT_RADIUS / 2, ROBOT_RADIUS,
+					ROBOT_RADIUS);
 
 			int x = robotPosition.x; // + ROBOT_RADIUS / 2 ;
 			int y = robotPosition.y;// + ROBOT_RADIUS / 2
-			
-			
+
 			g.setColor(Color.orange);
 			g.drawLine(x, y, (int) (x + 10 * Math.cos(robotDirection)), (int) (y + 10 * Math.sin(robotDirection)));
 			g.setColor(Color.black);
-			g.drawLine(x, y, (int) (x + 10 * Math.cos(robotDirection+30)), (int) (y + 10 * Math.sin(robotDirection+30)));
-			g.drawLine(x, y, (int) (x + 10 * Math.cos(robotDirection-30)), (int) (y + 10 * Math.sin(robotDirection-30)));
+			g.drawLine(x, y, (int) (x + 10 * Math.cos(robotDirection + 30)),
+					(int) (y + 10 * Math.sin(robotDirection + 30)));
+			g.drawLine(x, y, (int) (x + 10 * Math.cos(robotDirection - 30)),
+					(int) (y + 10 * Math.sin(robotDirection - 30)));
 
 			if (distanceC < Double.MAX_VALUE) {
 				g.setColor(Color.red);
