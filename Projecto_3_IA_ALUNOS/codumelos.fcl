@@ -11,6 +11,7 @@ END_VAR
 // Define output variable
 VAR_OUTPUT
     action : REAL;
+    rotation : REAL;
 END_VAR
 
 // Fuzzify input variable 'distance'
@@ -28,21 +29,18 @@ FUZZIFY velocity
 END_FUZZIFY
 
 // Defzzzify input variable 'danger'
-DEFUZZIFY danger
+FUZZIFY danger
     TERM poisonous := (0,0) (5,1) (10,0);
     TERM none := (10,0) (15,1) (20,0);
     TERM edible := (20,0) (25,1) (30,0);
-    // Use 'Center Of Gravity' defuzzification method
-    METHOD : COG;
-    // Default value is 0 (if no rule activates defuzzifier)
-    DEFAULT := 0;
-END_DEFUZZIFY
+    
+END_FUZZIFY
 
 // Defzzzify output variable 'action'
 DEFUZZIFY action
     TERM no_action := (0,0) (5,1) (10,0);
     TERM destroy := (10,0) (15,1) (20,0);
-    TERM pick-up := (20,0) (25,1) (30,0);
+    TERM pick_up := (20,0) (25,1) (30,0);
     // Use 'Center Of Gravity' defuzzification method
     METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
@@ -51,11 +49,11 @@ END_DEFUZZIFY
 
 // Defzzzify output variable 'rotation'
 DEFUZZIFY rotation
-    TERM strong-left := (0,0) (5,1) (10,0);
+    TERM strong_left := (0,0) (5,1) (10,0);
     TERM left := (10,0) (15,1) (20,0);
     TERM center:= (20,0) (25,1) (30,0);
     TERM right := (10,0) (15,1) (20,0);
-    TERM strong-right := (0,0) (5,1) (10,0);
+    TERM strong_right := (0,0) (5,1) (10,0);
     // Use 'Center Of Gravity' defuzzification method
     METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
@@ -71,9 +69,9 @@ RULEBLOCK No1
     // Use 'max' accumulation method
     ACCU : MAX;  // OR-Link
 
-    RULE 1 : IF danger IS poisonous OR food IS rancid THEN action IS destroy;
-    RULE 2 : IF danger IS edible THEN action IS pick-up; 
-    RULE 3 : IF danger IS none AND food IS delicious THEN action IS no_action;
+    RULE 1 : IF danger IS poisonous THEN action IS destroy;
+    RULE 2 : IF danger IS edible THEN action IS pick_up; 
+    RULE 3 : IF danger IS none THEN action IS no_action;
     
 END_RULEBLOCK
 
