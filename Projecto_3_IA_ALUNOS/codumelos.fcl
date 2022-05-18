@@ -48,7 +48,7 @@ DEFUZZIFY rotation
     TERM right := (10,0) (15,1) (20,0);
     TERM strong_right := (0,0) (5,1) (10,0);
     // Use 'Center Of Gravity' defuzzification method
-    METHOD : COG;
+    METHOD : COGS;
     // Default value is 0 (if no rule activates defuzzifier)
     DEFAULT := 0;
 END_DEFUZZIFY

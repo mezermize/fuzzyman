@@ -8,6 +8,5 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jFuzzyLogic.jar"/>
 	<classpathentry kind="lib" path="lib/weka.jar"/>
-	<classpathentry kind="lib" path="C:/Users/alexa/Desktop/LEI_PL/2_ANO/2SEM/IA/jFuzzyLogic.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
