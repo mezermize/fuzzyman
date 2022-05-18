@@ -4,7 +4,7 @@ import net.sourceforge.jFuzzyLogic.FIS;
 
 
 
-public class codumelios {
+public class Codumelos {
     public static void main(String[] args) throws Exception {
         // Load from 'FCL' file
         String fileName = "codumelos.fcl";

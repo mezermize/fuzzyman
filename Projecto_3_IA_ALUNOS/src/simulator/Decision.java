@@ -8,7 +8,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
-public class decision {
+public class Decision {
 	public static void main(String[] args) {
 		// Prepare dataset from file
 

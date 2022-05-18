@@ -1,5 +1,5 @@
 // Block definition (there may be more than one block per file)
-FUNCTION_BLOCK tipper
+FUNCTION_BLOCK accion
 
 // Define input variables
 VAR_INPUT
@@ -10,14 +10,14 @@ END_VAR
 // Define output variable
 VAR_OUTPUT
     action : REAL;
-    rotation : REAL;
+    direction : REAL;
 END_VAR
 
 // Fuzzify input variable 'distance'
 FUZZIFY distance
-    TERM near := (0, 1) (10, 0); 
-    TERM medium := (0, 0) (5, 1) (10, 0);
-    TERM far := (0, 0) (10, 1);
+    TERM near := (0, 1) (1,0); 
+    TERM medium := (1, 0) (4, 1) (8, 0);
+    TERM far := (7, 0) (10, 1);
 END_FUZZIFY
 
 
@@ -31,24 +31,24 @@ END_FUZZIFY
 
 // Defzzzify output variable 'action'
 DEFUZZIFY action
-	TERM destroy := (0,1) (1,0) (2,0);
-    TERM no_action := (0,1) (1,1) (2,0);
-    TERM pick_up := (0,0) (1,0) (2,1);
+	TERM destroy := 0;
+    TERM no_action := 1;
+    TERM pick_up := 2;
     // Use 'Center Of Gravity' defuzzification method
-    METHOD : COG;
+    METHOD : COGS;
     // Default value is 0 (if no rule activates defuzzifier)
-    DEFAULT := 0;
+    DEFAULT := 1;
 END_DEFUZZIFY
 
 // Defzzzify output variable 'rotation'
-DEFUZZIFY rotation
-    TERM strong_left := (0,0) (5,1) (10,0);
-    TERM left := (10,0) (15,1) (20,0);
-    TERM center:= (20,0) (25,1) (30,0);
-    TERM right := (10,0) (15,1) (20,0);
-    TERM strong_right := (0,0) (5,1) (10,0);
+DEFUZZIFY direction
+    TERM strong_left := (-45,1) (-20,0);
+    TERM left := (-45,0) (-30,1)(-15,0.8) (0,0);
+    TERM center:= (-15,0) (0,1) (15,0);
+    TERM right := (0,0) (15, 0.8) (30,1) (45,0);
+    TERM strong_right := (20,0) (45,1);
     // Use 'Center Of Gravity' defuzzification method
-    METHOD : COGS;
+    METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
     DEFAULT := 0;
 END_DEFUZZIFY
@@ -65,6 +65,8 @@ RULEBLOCK No1
     RULE 1 : IF danger IS poisonous AND distance IS near THEN action IS destroy;
     RULE 2 : IF danger IS edible AND distance IS near THEN action IS pick_up;
     RULE 3 : IF danger IS none AND distance IS near THEN action IS no_action;
+    
+//    RULE 4 : IF direction IS strong_left AND distance IS medium THEN move esquerda
     
     
 END_RULEBLOCK
