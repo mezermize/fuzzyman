@@ -24,16 +24,16 @@ END_FUZZIFY
 // Fuzzify input variable 'danger'
 FUZZIFY danger
   TERM poisonous := (0,0) (5,1);
-  TERM none := (0,0) (15,1) (20,0);
+  TERM none := (0,0) (2.5,0.5) (5,0);
   TERM edible := (0,1) (5,0);
     
 END_FUZZIFY
 
 // Defzzzify output variable 'action'
 DEFUZZIFY action
-    TERM no_action := (0,0) (5,1) (10,0);
-    TERM destroy := (10,0) (15,1) (20,0);
-    TERM pick_up := (20,0) (25,1) (30,0);
+	TERM destroy := (0,1) (1,0) (2,0);
+    TERM no_action := (0,1) (1,1) (2,0);
+    TERM pick_up := (0,0) (1,0) (2,1);
     // Use 'Center Of Gravity' defuzzification method
     METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
@@ -62,9 +62,10 @@ RULEBLOCK No1
     // Use 'max' accumulation method
     ACCU : MAX;  // OR-Link
 
-    RULE 1 : IF danger IS poisonous THEN action IS destroy;
-    RULE 2 : IF danger IS edible THEN action IS pick_up; 
-//    RULE 3 : IF danger IS none THEN action IS no_action;
+    RULE 1 : IF danger IS poisonous AND distance IS near THEN action IS destroy;
+    RULE 2 : IF danger IS edible AND distance IS near THEN action IS pick_up;
+    RULE 3 : IF danger IS none AND distance IS near THEN action IS no_action;
+    
     
 END_RULEBLOCK
 
