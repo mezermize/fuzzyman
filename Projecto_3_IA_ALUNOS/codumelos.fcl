@@ -5,12 +5,13 @@ FUNCTION_BLOCK accion
 VAR_INPUT
     distance : REAL;
     danger : REAL;
+    sensor: REAL;
 END_VAR
 
 // Define output variable
 VAR_OUTPUT
     action : REAL;
-    direction : REAL;
+    rotation : REAL;
 END_VAR
 
 // Fuzzify input variable 'distance'
@@ -29,6 +30,14 @@ FUZZIFY danger
     
 END_FUZZIFY
 
+FUZZIFY sensor
+	TERM strong_right := (-90,1) (-45,0);
+	TERM right := (-90,0) (-45,1)(0,0);
+	TERM center :=(-45,0) (0,1) (45,0);
+	TERM left :=(0,0)(45,1) (90,0);
+	TERM strong_left := (45,0) (90,1);
+END_FUZZIFY
+
 // Defzzzify output variable 'action'
 DEFUZZIFY action
 	TERM destroy := 0;
@@ -41,18 +50,20 @@ DEFUZZIFY action
 END_DEFUZZIFY
 
 // Defzzzify output variable 'rotation'
-DEFUZZIFY direction
-    TERM strong_left := (-45,1) (-20,0);
-    TERM left := (-45,0) (-30,1)(-15,0.8) (0,0);
+DEFUZZIFY rotation
+    TERM strong_right := (-45,1) (-20,0);
+    TERM right := (-45,0) (-30,1)(-15,0.8) (0,0);
     TERM center:= (-15,0) (0,1) (15,0);
-    TERM right := (0,0) (15, 0.8) (30,1) (45,0);
-    TERM strong_right := (20,0) (45,1);
+    TERM left := (0,0) (15, 0.8) (30,1) (45,0);
+    TERM strong_left := (20,0) (45,1);
     // Use 'Center Of Gravity' defuzzification method
     METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
     DEFAULT := 0;
 END_DEFUZZIFY
 
+
+//REGRAS PARA A ACAO
 RULEBLOCK No1
     // Use 'min' for 'and' (also implicit use 'max'
     // for 'or' to fulfill DeMorgan's Law)
@@ -67,8 +78,25 @@ RULEBLOCK No1
     RULE 3 : IF danger IS none AND distance IS near THEN action IS no_action;
     
 //    RULE 4 : IF direction IS strong_left AND distance IS medium THEN move esquerda
-    
-    
 END_RULEBLOCK
+
+//REGRAS PARA O MOVIMENTO
+RULEBLOCK No2
+    // Use 'min' for 'and' (also implicit use 'max'
+    // for 'or' to fulfill DeMorgan's Law)
+    AND : MIN; //minimos se for Or faz os maximos
+    // Use 'min' activation method
+    ACT : MIN; // TRuncate
+    // Use 'max' accumulation method
+    ACCU : MAX;  // OR-Link
+
+    RULE 1 : IF sensor IS strong_right AND distance IS NOT near THEN rotation IS strong_right;
+    RULE 2 : IF sensor IS right AND distance IS NOT near THEN rotation IS right;
+    RULE 3 : IF sensor IS center AND distance IS NOT near THEN rotation IS center;
+    RULE 4 : IF sensor IS left AND distance IS NOT near THEN rotation IS left;
+    RULE 5 : IF sensor IS strong_left AND distance IS NOT near THEN rotation IS strong_left;
+//    RULE 4 : IF direction IS strong_left AND distance IS medium THEN move esquerda
+END_RULEBLOCK
+
 
 END_FUNCTION_BLOCK
