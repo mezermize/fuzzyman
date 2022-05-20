@@ -169,11 +169,11 @@ public class Simulator {
 				if (mushrooms.get(index).getClassification().equals("poisonous")) {
 					points -= 10;
 				} else {
-					points += 1;
+					points += 5;
 				}
 			} else if (action == Action.DESTROY) {
 				if (mushrooms.get(index).getClassification().equals("poisonous")) {
-					points += 1;
+					points += 5;
 				} else {
 					points -= 5;
 				}
